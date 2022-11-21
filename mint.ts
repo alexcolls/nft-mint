@@ -1,8 +1,8 @@
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import { Metaplex, keypairIdentity, bundlrStorage, toMetaplexFile, toBigNumber } from "@metaplex-foundation/js";
 import * as fs from "fs";
-// import * as secret from './keypair.json';
-const secret = [4,58,161,182,185,42,208,25,189,53,91,18,153,38,17,208,238,252,229,74,113,124,184,22,20,41,112,222,103,36,4,53,7,84,97,87,88,109,49,183,87,144,123,212,59,189,34,81,164,130,35,91,112,78,166,194,211,87,193,242,219,255,178,193]
+
+const secret = require("./keypair.json");
 
 const QUICKNODE_RPC = 'https://warmhearted-winter-river.solana-devnet.discover.quiknode.pro/f0a750831d453a3e404bfcd2017bbe0f601242a3/';
 const SOLANA_CONNECTION = new Connection(QUICKNODE_RPC);
@@ -22,11 +22,11 @@ const CONFIG = {
   imgFileName: 'solucky.png',
   imgType: 'image/png',
   imgName: 'Solucky',
-  description: 'Pixel infrastructure for everyone!',
+  description: 'Solucky token to play in https://www.soluckygames.com',
   attributes: [
-      {trait_type: 'Speed', value: 'Quick'},
-      {trait_type: 'Type', value: 'Pixelated'},
-      {trait_type: 'Background', value: 'QuickNode Blue'}
+      {trait_type: 'VALUE', value: '1 SOL'},
+      {trait_type: 'WEBSITE', value: 'https://soluckygames.com'},
+      {trait_type: 'TWITTER', value: 'https://www.twitter.com/solucky__games'}
   ],
   sellerFeeBasisPoints: 500,//500 bp = 5%
   symbol: 'SOLUCKY',
