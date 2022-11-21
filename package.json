@@ -1,0 +1,25 @@
+{
+  "name": "nft-mint",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quantium-rock/nft-mint.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quantium-rock/nft-mint/issues"
+  },
+  "homepage": "https://github.com/quantium-rock/nft-mint#readme",
+  "dependencies": {
+    "@metaplex-foundation/js": "^0.17.6",
+    "@solana/web3.js": "^1.66.2",
+    "install": "^0.13.0",
+    "npm": "^9.1.2"
+  }
+}
