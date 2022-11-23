@@ -1,6 +1,7 @@
 import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import { Metaplex, keypairIdentity, bundlrStorage, toMetaplexFile, toBigNumber } from "@metaplex-foundation/js";
 import * as fs from "fs";
+import sendToken from "./sendToken";
 
 const secret = require("./keypair.json");
 
@@ -18,10 +19,10 @@ const METAPLEX = Metaplex.make(SOLANA_CONNECTION)
   }));
 
 const CONFIG = {
-  uploadPath: './img.png',
-  imgFileName: 'img.png',
+  uploadPath: 'https://www.isdi.education/uploads/media/21-9-medium/07/557-meme_marketing_0.png?v=1-0',
+  imgFileName: 'Meme',
   imgType: 'image/png',
-  imgName: 'Solucky',
+  imgName: 'TRINITY',
   description: 'Solucky token to play in https://www.soluckygames.com',
   attributes: [
       {trait_type: 'VALUE', value: '1 SOL'},
@@ -29,15 +30,26 @@ const CONFIG = {
       {trait_type: 'TWITTER', value: 'https://www.twitter.com/solucky__games'}
   ],
   sellerFeeBasisPoints: 500,//500 bp = 5%
-  symbol: 'SOLUCKY',
+  symbol: 'TRINITY',
   creators: [
       {address: WALLET.publicKey, share: 100}
   ]
 };
 
+// const imageUrl = "https://.../image.jpg";
+
+// fetch(imageUrl)
+//   //                         vvvv
+//   .then(response => response.blob())
+//   .then(imageBlob => {
+//       // Then create a local URL for that image and print it 
+//       const imageObjectURL = URL.createObjectURL(imageBlob);
+//       console.log(imageObjectURL);
+//   });
+
 async function uploadImage(filePath: string,fileName: string): Promise<string>  {
   console.log(`Step 1 - Uploading Image`);
-  const imgBuffer = fs.readFileSync(filePath);
+  const imgBuffer = filePath;
   const imgMetaplexFile = toMetaplexFile(imgBuffer, fileName);
   const imgUri = await METAPLEX.storage().upload(imgMetaplexFile);
   console.log(`   Image URI:`,imgUri);
@@ -81,8 +93,10 @@ async function mintNft(metadataUri: string, name: string, sellerFee: number, sym
     });
   console.log(`   Success!🎉`);
   console.log(`   Minted NFT: https://explorer.solana.com/address/${nft.address}?cluster=devnet`);
+  return nft;
 }
   
+const DESTINATION_WALLET = '2TyAp92s7TEksnycmYY2Fk5i1j5anwFTqECyuFMVhomP'; 
 
 async function main() {
   console.log(`Minting ${CONFIG.imgName} to an NFT in Wallet ${WALLET.publicKey.toBase58()}.`);
@@ -90,10 +104,10 @@ async function main() {
   const imgUri = await uploadImage(CONFIG.uploadPath, CONFIG.imgFileName);
   // Step 2 - Upload Metadata
   const metadataUri = await uploadMetadata(imgUri, CONFIG.imgType, CONFIG.imgName, CONFIG.description, CONFIG.attributes); 
-
   // Step 3 - Mint NFT
-  mintNft(metadataUri, CONFIG.imgName, CONFIG.sellerFeeBasisPoints, CONFIG.symbol, CONFIG.creators);
-
+  const nft = await mintNft(metadataUri, CONFIG.imgName, CONFIG.sellerFeeBasisPoints, CONFIG.symbol, CONFIG.creators);
+  // Step 4 - Send Token
+  sendToken(DESTINATION_WALLET, String(nft.address) )
 }
 
 main();
