@@ -18,8 +18,8 @@ const METAPLEX = Metaplex.make(SOLANA_CONNECTION)
   }));
 
 const CONFIG = {
-  uploadPath: './solucky.png',
-  imgFileName: 'solucky.png',
+  uploadPath: './img.png',
+  imgFileName: 'img.png',
   imgType: 'image/png',
   imgName: 'Solucky',
   description: 'Solucky token to play in https://www.soluckygames.com',
@@ -34,8 +34,6 @@ const CONFIG = {
       {address: WALLET.publicKey, share: 100}
   ]
 };
-
-
 
 async function uploadImage(filePath: string,fileName: string): Promise<string>  {
   console.log(`Step 1 - Uploading Image`);
@@ -95,6 +93,7 @@ async function main() {
 
   // Step 3 - Mint NFT
   mintNft(metadataUri, CONFIG.imgName, CONFIG.sellerFeeBasisPoints, CONFIG.symbol, CONFIG.creators);
+
 }
 
 main();
