@@ -2,8 +2,8 @@ import { Connection, Keypair, PublicKey } from "@solana/web3.js";
 import { Metaplex, keypairIdentity, bundlrStorage, toMetaplexFile, toBigNumber } from "@metaplex-foundation/js";
 import * as fs from "fs";
 import sendToken from "./sendToken";
-const { Buffer } = require("buffer");
-const axios = require("axios");
+import { Buffer } from "buffer";
+import axios from "axios";
 
 const secret = require("./keypair.json");
 
@@ -21,7 +21,7 @@ const METAPLEX = Metaplex.make(SOLANA_CONNECTION)
   }));
 
 const CONFIG = {
-  uploadPath: './img.png',
+  uploadPath: 'https://www.isdi.education/uploads/media/21-9-medium/07/557-meme_marketing_0.png?v=1-0',
   imgFileName: 'Meme',
   imgType: 'image/png',
   imgName: 'TRINITY',
@@ -40,7 +40,8 @@ const CONFIG = {
 
 async function uploadImage(filePath: string,fileName: string): Promise<string>  {
   console.log(`Step 1 - Uploading Image`);
-  const imgBuffer = fs.readFileSync(filePath);
+  const { data } = await axios.get(filePath, { responseType: "arraybuffer", });
+  const imgBuffer = Buffer.from(data);
   const imgMetaplexFile = toMetaplexFile(imgBuffer, fileName);
   const imgUri = await METAPLEX.storage().upload(imgMetaplexFile);
   console.log(`   Image URI:`,imgUri);
